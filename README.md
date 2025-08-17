@@ -1,4 +1,4 @@
-# Project Name
+# Typescript
 
 A simple TypeScript project demonstrating basic usage.
 
