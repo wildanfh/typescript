@@ -1,3 +1,18 @@
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var hello = function (name) {
     console.log("Hello ".concat(name));
 };
@@ -270,3 +285,130 @@ var labrador = {
     },
 };
 labrador.bark();
+var myCar = {
+    brand: "Toyota",
+    model: "Camry",
+};
+// Type Alias: Does not support declaration merging.
+// 4. Extensibility:
+// Interface: Use when you need to define the shape of objects and also when you need to implement them in classes. They are more suitable for defining contracts that classes must adhere to.
+// Type Alias: Use when you want to create custom types that can be combined using union types, intersection types, or when defining complex types.
+// 5. Readability and Style:
+// Interface: Preferred when defining shapes of objects, especially for public APIs, as they convey the intent clearly. They also work well with code editors' IntelliSense for auto-completion and documentation generation.
+// Type Alias: Useful for defining unions, intersections, and more complex types. They are often used to give descriptive names to specific combinations of types.
+// Class Type annotations
+var Product = /** @class */ (function () {
+    function Product(id, name, price) {
+        // constructor paramater type annotations
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
+    Product.prototype.getProductInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name, ", Price : \u20AC").concat(this.price);
+    };
+    return Product;
+}());
+// Create an instance of the Product class
+var product1 = new Product(1, "Widget", 10.0);
+// Access class properties and call a method
+console.log(product1.getProductInfo());
+// class access modifiers:
+// 1. public
+var MyClassPublic = /** @class */ (function () {
+    function MyClassPublic(name) {
+        this.name = name;
+    }
+    return MyClassPublic;
+}());
+var MyClassPublicNew = /** @class */ (function () {
+    function MyClassPublicNew(name) {
+        this.name = name;
+    }
+    return MyClassPublicNew;
+}());
+var instancePublic = new MyClassPublic("John");
+console.log(instancePublic.name); // Accessing the public property
+var instancePublicNew = new MyClassPublicNew("Aziz");
+console.log(instancePublicNew.name);
+// 2. private
+var MyClassPrivate = /** @class */ (function () {
+    function MyClassPrivate(secret) {
+        this.secret = secret;
+    }
+    MyClassPrivate.prototype.revealSecret = function () {
+        console.log(this.secret); // Accessing the private property from within the class
+    };
+    return MyClassPrivate;
+}());
+var myClassPrivateNew = /** @class */ (function () {
+    function myClassPrivateNew(secret) {
+        this.secret = secret;
+    }
+    myClassPrivateNew.prototype.revealSecret = function () {
+        console.log(this.secret);
+    };
+    return myClassPrivateNew;
+}());
+var instancePrivate = new MyClassPrivate("My secret");
+// console.log(instance.secret); // This would result in an error because secret is private
+instancePrivate.revealSecret(); // This is a valid way to access the private property
+var instancePrivateNew = new myClassPrivateNew("My secret new");
+instancePrivateNew.revealSecret();
+// 3. protected
+var Parent = /** @class */ (function () {
+    function Parent(name) {
+        this.familyName = name;
+    }
+    return Parent;
+}());
+var Child = /** @class */ (function (_super) {
+    __extends(Child, _super);
+    function Child() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Child.prototype.introduceFamily = function () {
+        console.log("Our family name is ".concat(this.familyName));
+    };
+    return Child;
+}(Parent));
+var myParent = new Parent("Ling");
+var child = new Child("Johnson");
+// console.log(parent.familyName); // This would result in an error because familyName is protected
+child.introduceFamily(); // This is a valid way to access the protected property
+// Class accessors
+var ProductExAccessors = /** @class */ (function () {
+    function ProductExAccessors(id, name) {
+        this.id = id;
+        this.name = name;
+        this._price = 0; // default price
+    }
+    Object.defineProperty(ProductExAccessors.prototype, "price", {
+        get: function () {
+            return this._price;
+        },
+        // 'public' setter for price
+        set: function (newPrice) {
+            if (newPrice >= 0) {
+                this._price = newPrice;
+            }
+            else {
+                console.log("Price cannot be negative.");
+            }
+        },
+        enumerable: false,
+        configurable: true
+    });
+    ProductExAccessors.prototype.getProductInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name, ", Price : \u20AC").concat(this._price);
+    };
+    return ProductExAccessors;
+}());
+// Create an instance of the ProductExAccessors class
+var productEx = new ProductExAccessors(1, "Widget");
+console.log(productEx.getProductInfo()); // Default price: ID: 1, Name: Widget, Price: $0
+// Use the 'setter' to update the price
+productEx.price = 20.0;
+console.log(productEx.getProductInfo()); // Updated price: ID: 1, Name: Widget, Price: $20
+// Attempting to set a negative price triggers the setter logic
+productEx.price = -5; // Price cannot be negative.

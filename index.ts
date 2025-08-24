@@ -480,3 +480,136 @@ const myCar : Car = {
 
 // Class Type annotations
 
+class Product {
+  id : number;
+  name : string;
+  price : number;
+  
+  constructor(id : number, name : string, price : number) {
+    // constructor paramater type annotations
+    this.id = id;
+    this.name = name;
+    this.price = price;
+  }
+  
+  getProductInfo() : string {
+    return `ID : ${this.id}, Name : ${this.name}, Price : €${this.price}`;
+  }
+}
+
+// Create an instance of the Product class
+const product1 = new Product(1, "Widget", 10.0);
+
+// Access class properties and call a method
+console.log(product1.getProductInfo());
+
+// class access modifiers:
+
+// 1. public
+class MyClassPublic {
+  public name : string;
+  
+  constructor(name : string) {
+    this.name = name;
+  }
+}
+
+class MyClassPublicNew {
+  constructor(public name : string) {}
+}
+
+const instancePublic = new MyClassPublic("John");
+console.log(instancePublic.name); // Accessing the public property
+
+const instancePublicNew = new MyClassPublicNew("Aziz");
+console.log(instancePublicNew.name);
+
+// 2. private
+class MyClassPrivate {
+    private secret: string;
+
+    constructor(secret: string) {
+        this.secret = secret;
+    }
+
+    revealSecret() {
+        console.log(this.secret); // Accessing the private property from within the class
+    }
+}
+
+class myClassPrivateNew {
+  constructor(private secret : string) {}
+  
+  revealSecret() {
+      console.log(this.secret);
+  }
+}
+
+const instancePrivate = new MyClassPrivate("My secret");
+// console.log(instance.secret); // This would result in an error because secret is private
+instancePrivate.revealSecret(); // This is a valid way to access the private property
+
+const instancePrivateNew = new myClassPrivateNew("My secret new");
+
+instancePrivateNew.revealSecret();
+
+// 3. protected
+
+class Parent {
+  protected familyName : string;
+  
+  constructor(name : string) {
+    this.familyName = name;
+  }
+}
+
+class Child extends Parent {
+  introduceFamily() {
+    console.log(`Our family name is ${this.familyName}`);
+  }
+}
+
+const myParent = new Parent("Ling");
+const child = new Child("Johnson");
+
+// console.log(parent.familyName); // This would result in an error because familyName is protected
+child.introduceFamily(); // This is a valid way to access the protected property
+
+// Class accessors
+  class ProductExAccessors {
+    private _price : number;
+    
+    constructor(private id : number, private name : string) {
+      this._price = 0; // default price
+    }
+    
+    get price() : number {
+      return this._price;
+    }
+    
+    // 'public' setter for price
+    set price(newPrice : number) {
+      if (newPrice >= 0) {
+        this._price = newPrice;
+      } else {
+        console.log("Price cannot be negative.")
+      }
+    }
+    
+    getProductInfo() : string {
+      return `ID : ${this.id}, Name : ${this.name}, Price : €${this._price}`;
+    }
+  }
+  
+  // Create an instance of the ProductExAccessors class
+  const productEx = new ProductExAccessors(1, "Widget");
+  
+  console.log(productEx.getProductInfo()); // Default price: ID: 1, Name: Widget, Price: $0
+  
+  // Use the 'setter' to update the price
+  productEx.price = 20.0;
+  
+  console.log(productEx.getProductInfo()); // Updated price: ID: 1, Name: Widget, Price: $20
+  
+  // Attempting to set a negative price triggers the setter logic
+  productEx.price = -5; // Price cannot be negative.
