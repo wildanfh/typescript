@@ -412,3 +412,200 @@ productEx.price = 20.0;
 console.log(productEx.getProductInfo()); // Updated price: ID: 1, Name: Widget, Price: $20
 // Attempting to set a negative price triggers the setter logic
 productEx.price = -5; // Price cannot be negative.
+// class static member
+var ProductStaticMembers = /** @class */ (function () {
+    function ProductStaticMembers(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+    ProductStaticMembers.generateNextId = function () {
+        return ProductStaticMembers.nextId++;
+    };
+    ProductStaticMembers.prototype.getProductInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name);
+    };
+    // 'private' property 
+    ProductStaticMembers.nextId = 1;
+    return ProductStaticMembers;
+}());
+// Generate unique IDs for products using the static method
+var product1static = new ProductStaticMembers(ProductStaticMembers.generateNextId(), "Widget");
+var product2static = new ProductStaticMembers(ProductStaticMembers.generateNextId(), "Gadget");
+console.log(product1static.getProductInfo()); // ID: 1, Name: Widget
+console.log(product2static.getProductInfo()); // ID: 2, Name: Gadget
+// class implement Interface
+var ProductImplementInterface = /** @class */ (function () {
+    function ProductImplementInterface(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+    ProductImplementInterface.generateNextId = function () {
+        return ProductImplementInterface.nextId++;
+    };
+    ProductImplementInterface.prototype.getProductInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name);
+    };
+    // 'private' property
+    ProductImplementInterface.nextId = 1;
+    return ProductImplementInterface;
+}());
+// Generate unique IDs for products using the static method
+var product1implement = new ProductImplementInterface(ProductImplementInterface.generateNextId(), "Widget");
+var product2implement = new ProductImplementInterface(ProductImplementInterface.generateNextId(), "Gadget");
+// ID: 1, Name: Widget
+console.log(product1implement.getProductInfo());
+console.log(product2implement.getProductInfo()); // ID: 2, Name: Gadget
+// abstract classes and ProductStaticMembers
+var AbstractItem = /** @class */ (function () {
+    function AbstractItem(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+    AbstractItem.generateNextId = function () {
+        return AbstractItem.nextId++;
+    };
+    AbstractItem.nextId = 1;
+    return AbstractItem;
+}());
+var Item = /** @class */ (function (_super) {
+    __extends(Item, _super);
+    function Item(id, name) {
+        return _super.call(this, id, name) || this;
+    }
+    Item.prototype.getItemInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name);
+    };
+    return Item;
+}(AbstractItem));
+var item1 = new Item(AbstractItem.generateNextId(), "Widget");
+var item2 = new Item(AbstractItem.generateNextId(), "Gadget");
+console.log(item1.getItemInfo()); // ID: 1, Name: Widget
+console.log(item2.getItemInfo()); // ID: 2, Name: Gadget
+// Polymorphism & Method Override
+// Define an abstract class
+var AbstractEntity = /** @class */ (function () {
+    function AbstractEntity(id, name) {
+        this.id = id;
+        this.name = name;
+    }
+    AbstractEntity.generateNextId = function () {
+        return AbstractEntity.nextId++;
+    };
+    AbstractEntity.nextId = 1;
+    return AbstractEntity;
+}());
+// Create a concrete subclass
+var Entity = /** @class */ (function (_super) {
+    __extends(Entity, _super);
+    function Entity(id, name) {
+        return _super.call(this, id, name) || this;
+    }
+    Entity.prototype.getEntityInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name);
+    };
+    return Entity;
+}(AbstractEntity));
+// Create another concrete subclass
+var AnotherEntity = /** @class */ (function (_super) {
+    __extends(AnotherEntity, _super);
+    function AnotherEntity(id, name) {
+        return _super.call(this, id, name) || this;
+    }
+    AnotherEntity.prototype.getEntityInfo = function () {
+        return "ID : ".concat(this.id, ", Name : ").concat(this.name, ", Additional Info : ...");
+    };
+    return AnotherEntity;
+}(AbstractEntity));
+// Generate unique IDs for entities using the static method
+var entity1 = new Entity(AbstractEntity.generateNextId(), "Widget");
+var entity2 = new AnotherEntity(AbstractEntity.generateNextId(), "Gadget");
+// Polymorphism: Call 'getEntityInfo' method on different concrete subclasses
+console.log(entity1.getEntityInfo()); // ID: 1, Name: Widget
+console.log(entity2.getEntityInfo()); // ID: 2, Name: Gadget, Additional Info: ...
+// Generics
+// A generic function that returns the input value as is
+function returnType(val) {
+    return val;
+}
+// Usage of the generic function with different types
+var numValue = returnType(100);
+var strValue = returnType("Elzero");
+var boolValue = returnType(true);
+var arrValue = returnType([1, 2, 3, 4]);
+console.log("Number Value : ".concat(numValue));
+console.log("String Value : ".concat(strValue));
+console.log("Boolean Value : ".concat(boolValue));
+console.log("Array Value : ".concat(arrValue));
+// Generics Multiple types
+// Generic Function `returnTypeEx`
+function returnTypeEx(val) {
+    return val;
+}
+console.log(returnTypeEx(100)); // Returns: 100 (number)
+console.log(returnTypeEx("Elzero")); // Returns: "Elzero" (string)
+// Arrow Function with Generics `returnTypeArrowSyntax`
+var returnTypeArrowSyntax = function (val) { return val; };
+console.log(returnTypeArrowSyntax(100)); // Returns: 100 (number)
+console.log(returnTypeArrowSyntax("Elzero")); // Returns: "Elzero" (string)
+// Generic Function `testType`
+function testType(val) {
+    return "The Value Is ".concat(val, " And Type Is ").concat(typeof val);
+}
+console.log(testType(100));
+// Returns: "The Value Is 100 And Type Is number"
+console.log(testType("Elzero"));
+// Returns: "The Value Is Elzero And Type Is string"
+// Generic Function `multipleTypes`
+function multipleTypes(valueOne, valueTwo) {
+    return "The First Value Is ".concat(valueOne, " And Second Value ").concat(valueTwo);
+}
+// Returns: "The First Value Is Osama And Second Value 100"
+console.log(multipleTypes("Osama", 100));
+// Returns: "The First Value Is Elzero And Second Value true"
+console.log(multipleTypes("Elzero", true));
+// Generics classes
+// Generic Class `User`
+var User = /** @class */ (function () {
+    function User(value) {
+        this.value = value;
+    }
+    // Method that takes a message of type `T` and displays it along with the `value` property
+    User.prototype.show = function (msg) {
+        console.log("".concat(msg, " - ").concat(this.value));
+    };
+    return User;
+}());
+// Creating an instance of `User` with a specific type parameter (string) 
+var userOne = new User("Elzero");
+console.log(userOne.value); // Outputs: "Elzero"
+userOne.show("Message"); // Outputs: "Message - Elzero"
+// Creating an instance of `User` with a type parameter that can be a number or a string
+var userTwo = new User(100);
+// Outputs: 100
+console.log(userTwo.value);
+// Outputs: "Message - 100"
+userTwo.show("Message");
+// Generic Class `Collection`
+var Collection = /** @class */ (function () {
+    function Collection() {
+        this.data = [];
+    }
+    // Method to add an item of type 'T' to the collection
+    Collection.prototype.add = function (item) {
+        this.data.push(item);
+    };
+    return Collection;
+}());
+// Creating an instance of `Collection` with type parameter `Book`
+var itemOne = new Collection();
+itemOne.add({ itemType: "Book", title: "Atomic Habits", isbn: 150510 });
+itemOne.add({ itemType: "Book", title: "Follow Your Heart", isbn: 650650 });
+console.log(itemOne);
+// Creating an instance of `Collection` with type parameter `Game`
+var itemTwo = new Collection();
+itemTwo.add({ itemType: "Game", title: "Uncharted", style: "Action", price: 150 });
+console.log(itemTwo);
+// Type Assertions
+var data = "Hadeh";
+// Type assertion to treat "data" as a string
+// console.log((data as string).repeat(3));

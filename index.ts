@@ -613,3 +613,252 @@ child.introduceFamily(); // This is a valid way to access the protected property
   
   // Attempting to set a negative price triggers the setter logic
   productEx.price = -5; // Price cannot be negative.
+  
+// class static member
+  
+  class ProductStaticMembers {
+    // 'private' property 
+    private static nextId : number = 1;
+    
+    constructor(private id : number, private name : string) {}
+    
+    static generateNextId() : number {
+      return ProductStaticMembers.nextId++;
+    }
+    
+    getProductInfo() : string {
+      return `ID : ${this.id}, Name : ${this.name}`;
+    }
+  }
+  
+  // Generate unique IDs for products using the static method
+  const product1static = new ProductStaticMembers(ProductStaticMembers.generateNextId(), "Widget");
+  
+  const product2static = new ProductStaticMembers(ProductStaticMembers.generateNextId(), "Gadget");
+  
+  console.log(product1static.getProductInfo()); // ID: 1, Name: Widget
+  console.log(product2static.getProductInfo()); // ID: 2, Name: Gadget
+  
+  // class implement Interface
+  class ProductImplementInterface {
+    // 'private' property
+    private static nextId : number = 1;
+    
+    constructor(private id : number, private name : string) {}
+    
+    static generateNextId() : number {
+      return ProductImplementInterface.nextId++;
+    }
+    
+    getProductInfo() : string {
+      return `ID : ${this.id}, Name : ${this.name}`;
+    }
+  }
+  
+  // Generate unique IDs for products using the static method
+  const product1implement = new ProductImplementInterface(ProductImplementInterface.generateNextId(), "Widget");
+  
+  const product2implement = new ProductImplementInterface(ProductImplementInterface.generateNextId(), "Gadget");
+  
+  // ID: 1, Name: Widget
+  console.log(product1implement.getProductInfo());
+  console.log(product2implement.getProductInfo()); // ID: 2, Name: Gadget
+  
+// abstract classes and ProductStaticMembers
+abstract class AbstractItem {
+  private static nextId : number = 1;
+  
+  constructor(public id : number, protected name : string) {}
+  
+  static generateNextId() : number {
+    return AbstractItem.nextId++;
+  }
+  
+  abstract getItemInfo();
+}
+class Item extends AbstractItem {
+  constructor(id : number, name : string) {
+    super(id, name);
+  }
+  
+  getItemInfo() : string {
+    return `ID : ${this.id}, Name : ${this.name}`;
+  }
+}
+
+const item1 : AbstractItem = new Item(AbstractItem.generateNextId(), "Widget");
+const item2: AbstractItem = new Item(AbstractItem.generateNextId(), "Gadget");
+
+console.log(item1.getItemInfo()); // ID: 1, Name: Widget
+console.log(item2.getItemInfo()); // ID: 2, Name: Gadget
+
+// Polymorphism & Method Override
+// Define an abstract class
+abstract class AbstractEntity {
+  private static nextId : number = 1;
+  protected constructor(public id : number, protected name : string) {}
+  
+  static generateNextId() : number {
+    return AbstractEntity.nextId++;
+  }
+  
+  abstract getEntityInfo() : string;
+}
+
+// Create a concrete subclass
+class Entity extends AbstractEntity {
+  constructor(id : number, name : string) {
+    super(id, name);
+  }
+  
+  getEntityInfo() : string {
+    return `ID : ${this.id}, Name : ${this.name}`;
+  }
+}
+
+// Create another concrete subclass
+class AnotherEntity extends AbstractEntity {
+  constructor(id : number, name : string) {
+    super(id, name);
+  }
+  
+  getEntityInfo() : string {
+    return `ID : ${this.id}, Name : ${this.name}, Additional Info : ...`;
+  }
+}
+
+// Generate unique IDs for entities using the static method
+const entity1 : AbstractEntity = new Entity(AbstractEntity.generateNextId(), "Widget");
+const entity2 : AbstractEntity = new AnotherEntity(AbstractEntity.generateNextId(), "Gadget");
+
+// Polymorphism: Call 'getEntityInfo' method on different concrete subclasses
+console.log(entity1.getEntityInfo()); // ID: 1, Name: Widget
+console.log(entity2.getEntityInfo()); // ID: 2, Name: Gadget, Additional Info: ...
+
+// Generics
+// A generic function that returns the input value as is
+function returnType<T>(val : T) : T {
+  return val;
+}
+
+// Usage of the generic function with different types
+const numValue : number = returnType<number>(100);
+const strValue : string = returnType<string>("Elzero");
+const boolValue : boolean = returnType<boolean>(true);
+const arrValue : number[] = returnType<number[]>([1, 2, 3, 4]);
+
+console.log(`Number Value : ${numValue}`);
+console.log(`String Value : ${strValue}`);
+console.log(`Boolean Value : ${boolValue}`);
+console.log(`Array Value : ${arrValue}`);
+
+
+// Generics Multiple types
+// Generic Function `returnTypeEx`
+function returnTypeEx<T>(val: T) : T {
+    return val;
+  }
+  
+  console.log(returnTypeEx<number>(100)); // Returns: 100 (number)
+  console.log(returnTypeEx<string>("Elzero")); // Returns: "Elzero" (string)
+  
+  // Arrow Function with Generics `returnTypeArrowSyntax`
+  const returnTypeArrowSyntax = <T>(val : T) : T => val;
+  
+  console.log(returnTypeArrowSyntax<number>(100)); // Returns: 100 (number)
+  console.log(returnTypeArrowSyntax<string>("Elzero")); // Returns: "Elzero" (string)
+  
+  // Generic Function `testType`
+  function testType<T>(val : T) : string {
+    return `The Value Is ${val} And Type Is ${typeof val}`;
+  }
+  
+  console.log(testType<number>(100));
+  // Returns: "The Value Is 100 And Type Is number"
+  
+  console.log(testType<string>("Elzero"));
+  // Returns: "The Value Is Elzero And Type Is string"
+  
+  // Generic Function `multipleTypes`
+  function multipleTypes<T, S>(valueOne : T, valueTwo : S) : string {
+    return `The First Value Is ${valueOne} And Second Value ${valueTwo}`;
+  }
+  
+  // Returns: "The First Value Is Osama And Second Value 100"
+  console.log(multipleTypes<string, number>("Osama", 100));
+  
+  // Returns: "The First Value Is Elzero And Second Value true"
+  console.log(multipleTypes<string, boolean>("Elzero", true));
+  
+  // Generics classes
+  
+  // Generic Class `User`
+class User<T = string> {
+  constructor(public value : T) {}
+  
+  // Method that takes a message of type `T` and displays it along with the `value` property
+  show(msg : T) : void {
+    console.log(`${msg} - ${this.value}`);
+  }
+}
+
+// Creating an instance of `User` with a specific type parameter (string) 
+let userOne = new User<string>("Elzero");
+console.log(userOne.value); // Outputs: "Elzero"
+userOne.show("Message"); // Outputs: "Message - Elzero"
+
+
+// Creating an instance of `User` with a type parameter that can be a number or a string
+let userTwo = new User<number | string>(100);
+ // Outputs: 100
+console.log(userTwo.value);
+ // Outputs: "Message - 100"
+userTwo.show("Message");
+
+
+// Generics And Interfaces
+
+// Interface definitions for Book and Game
+interface Book {
+  itemType : string;
+  title : string;
+  isbn : number;
+}
+
+interface Game {
+  itemType : string;
+  title : string;
+  style : string;
+  price : number;
+}
+
+// Generic Class `Collection`
+class Collection<T> {
+  public data : T[] = [];
+  
+  // Method to add an item of type 'T' to the collection
+  add(item : T) : void {
+    this.data.push(item);
+  }
+}
+
+// Creating an instance of `Collection` with type parameter `Book`
+let itemOne = new Collection<Book>();
+itemOne.add({ itemType : "Book", title : "Atomic Habits", isbn : 150510 });
+itemOne.add({ itemType : "Book", title : "Follow Your Heart", isbn : 650650 });
+console.log(itemOne);
+
+// Creating an instance of `Collection` with type parameter `Game`
+let itemTwo = new Collection<Game>();
+itemTwo.add({ itemType : "Game", title : "Uncharted", style : "Action", price : 150 });
+console.log(itemTwo);
+
+// Type Assertions
+let data: any = "Hadeh";
+
+// Type assertion to treat "data" as a string
+
+// console.log((data as string).repeat(3));
+
+
+
